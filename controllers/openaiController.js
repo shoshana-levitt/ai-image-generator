@@ -14,12 +14,12 @@ const openai = new OpenAI({
 
 const generateImage = async (req, res) => {
   try {
-    const response = await openai.createImage({
+    const response = await openai.images.generate({
       prompt: "polar bear on ice skates",
       n: 1,
       size: "512x512",
     });
-    const imageUrl = response.data.data[0];
+    const imageUrl = response.data[0].url;
     res.status(200).json({
       success: true,
       data: imageUrl,
