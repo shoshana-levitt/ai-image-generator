@@ -1,7 +1,6 @@
 function onSubmit(e) {
   e.preventDefault();
   document.querySelector(".msg").textContent = "";
-  document.querySelector("#image").src = "";
   const prompt = document.querySelector("#prompt").value;
   const size = document.querySelector("#size").value;
   if (prompt === "") {
@@ -22,6 +21,7 @@ async function generateImageRequest(prompt, size) {
       body: JSON.stringify({
         prompt,
         size,
+        num_images: 4,
       }),
     });
     if (!response.ok) {
@@ -30,11 +30,23 @@ async function generateImageRequest(prompt, size) {
     }
     const data = await response.json();
     // console.log(data);
-    const imageUrl = data.data;
-    document.querySelector("#image").src = imageUrl;
+    const imageUrls = data.data;
+    displayImages(imageUrls);
+    // document.querySelector("#image").src = imageUrls;
     removeSpinner();
   } catch (error) {
     document.querySelector(".msg").textContent = error;
+  }
+}
+
+function displayImages(imageUrls) {
+  const imageContainer = document.querySelector("#image-container");
+  imageContainer.innerHTML = ""; // Clear previous images
+
+  for (const imageUrl of imageUrls) {
+    const imgElement = document.createElement("img");
+    imgElement.src = imageUrl;
+    imageContainer.appendChild(imgElement);
   }
 }
 
