@@ -41,8 +41,8 @@ async function generateImageRequest(prompt, size) {
 
 function displayImages(imageUrls) {
   const imageContainer = document.querySelector("#image-container");
+  if (!imageContainer) return; // Exit early if element is not found
   imageContainer.innerHTML = ""; // Clear previous images
-
   for (const imageUrl of imageUrls) {
     const imgElement = document.createElement("img");
     imgElement.src = imageUrl;
